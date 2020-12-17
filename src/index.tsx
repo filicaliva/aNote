@@ -1,17 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import firebase from "firebase/app";
+import firebase from 'firebase/app';
+import 'firebase/database';
 import "firebase/auth";
 import "firebase/firestore";
 import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
+import Auth from './features/auth/Auth'
 import { store } from './app/store';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker';
 import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 import { createFirestoreInstance } from "redux-firestore";
-
+import PrivateRoute from './features/auth/PrivateRoute'
+import NotFound from './features/additional/NotFound'
 
 
 const firebaseConfig = {
@@ -26,7 +30,7 @@ const firebaseConfig = {
 
 const rrfConfig = {
   userProfile: "users",
-  useFirestoreForProfile: true,
+  useFirestoreForProfile: true
 };
 
 const rrfProps = {
@@ -35,8 +39,8 @@ const rrfProps = {
   dispatch: store.dispatch,
   createFirestoreInstance,
 };
-
 firebase.initializeApp(firebaseConfig);
+firebase.auth();
 firebase.firestore();
 
 ReactDOM.render(
@@ -44,7 +48,17 @@ ReactDOM.render(
     <Provider store={store}>
       <ReactReduxFirebaseProvider {...rrfProps}>
         <BrowserRouter>
-          <App />
+          <Switch>
+            <Route path="/" exact>
+              <Auth />
+            </Route>
+            <PrivateRoute path="/app">
+              <App />
+            </PrivateRoute>
+            <Route path="*" >
+              <NotFound />
+            </Route>
+          </Switch>
         </BrowserRouter>
       </ReactReduxFirebaseProvider>
     </Provider>
