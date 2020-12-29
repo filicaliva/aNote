@@ -16,7 +16,10 @@ import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 import { createFirestoreInstance } from "redux-firestore";
 import PrivateRoute from './features/auth/PrivateRoute'
 import NotFound from './features/additional/NotFound'
-
+import SignIn from './features/auth/SignIn'
+import SignUp from './features/auth/SignUp'
+import PasswordReset from './features/auth/PasswordReset'
+import NewPassword from './features/auth/NewPassword'
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -43,19 +46,19 @@ firebase.initializeApp(firebaseConfig);
 firebase.auth();
 firebase.firestore();
 
+
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ReactReduxFirebaseProvider {...rrfProps}>
         <BrowserRouter>
           <Switch>
-            <Route path="/" exact>
-              <Auth />
-            </Route>
-            <PrivateRoute path="/app">
-              <App />
+            <PrivateRoute path="/app" exact>
+              <App/>
             </PrivateRoute>
-            <Route path="*" >
+              <Auth />
+            <Route>
               <NotFound />
             </Route>
           </Switch>

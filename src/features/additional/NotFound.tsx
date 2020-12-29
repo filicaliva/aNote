@@ -17,7 +17,7 @@ export default function NotFound() {
                 <Link to="/" className="text-white text-decoration-none" >
                     <button className='btn btn-danger' >
                         Back to home page
-                </button>
+                    </button>
                 </Link>
             </div>
 
